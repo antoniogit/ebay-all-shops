@@ -98,6 +98,8 @@ def changeProxy(url):
                 goodProxy = True
         except ConnectionError:
             goodProxy = False
+        except TimeoutException, err:
+             goodProxy = False
     return soupProxy
 
 def getShopDetails(ebayShopId, categoryLink, page) :
@@ -247,35 +249,39 @@ with open('ebayResults.csv', 'wb') as myfile:
     wr.writerow(["Website URL", "Company Name", "Phone Number", "Email", "Overall Rating", "Address", "Postal Code",
                 "Item As Described Count", "Item As Described Rating", "Communication Count", "Communication Rating", "Dispatch Time Count", "Dispatch Time Rating",
                 "Postage Count", "Postage Rating", "Member Since", "Ebay ShopId", "Imported to Hubspot?"])
+
     hasPages = True
     currentPage = 1
+    startPage = 24
 
     while hasPages:
-        categoryUrl = 'https://www.ebay.co.uk/b/Home-Decor-Items/10033/bn_1839832?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
-        soup = changeProxy(categoryUrl)
-        pageItems = soup.findAll('a', class_ = 's-item__link')
+        if currentPage == startPage:
+            categoryUrl = 'https://www.ebay.co.uk/b/Home-Decor-Items/10033/bn_1839832?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
+            soup = changeProxy(categoryUrl)
+            pageItems = soup.findAll('a', class_ = 's-item__link')
 
-        # get the biggest next page number on this page 
-        pagination = soup.findAll('li', class_ = 'ebayui-pagination__li ')
-        lastLi = pagination[-1]
-        lastLinks = lastLi.findAll('a')
-        lastLink = lastLinks[0]
-        biggestPageNumber = lastLink.text
+            # get the biggest next page number on this page 
+            pagination = soup.findAll('li', class_ = 'ebayui-pagination__li ')
+            lastLi = pagination[-1]
+            lastLinks = lastLi.findAll('a')
+            lastLink = lastLinks[0]
+            biggestPageNumber = lastLink.text
 
-        # get each product on the current page
-        if pageItems:
-            for pageItem in pageItems:
-                sellerUrl = pageItem['href']
-                itemSellerSoup = changeProxy(sellerUrl)
-                shopIds = itemSellerSoup.findAll('span', class_='mbg-nw')
-                if shopIds:
-                    shopId = shopIds[0].text
-                    if shopId not in visitedShops :
-                        visitedShops.append(shopId)
-                        getShopDetails(shopId, categoryUrl, currentPage)
+            # get each product on the current page
+            if pageItems:
+                for pageItem in pageItems:
+                    sellerUrl = pageItem['href']
+                    itemSellerSoup = changeProxy(sellerUrl)
+                    shopIds = itemSellerSoup.findAll('span', class_='mbg-nw')
 
-        if currentPage >= int(biggestPageNumber) :
-            hasPages = False
+                    if shopIds:
+                        shopId = shopIds[0].text
+                        if shopId not in visitedShops :
+                            visitedShops.append(shopId)
+                            getShopDetails(shopId, categoryUrl, currentPage)
+
+            if currentPage >= int(biggestPageNumber) :
+                hasPages = False
 
         currentPage +=1
 
