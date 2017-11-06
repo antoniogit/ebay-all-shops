@@ -274,7 +274,7 @@ with open('ebayResults.csv', 'wb') as myfile:
 
     hasPages = True
     currentPage = 1
-    startPage = 24
+    startPage = 0
 
     while hasPages:
         if currentPage >= startPage:
