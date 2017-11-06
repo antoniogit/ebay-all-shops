@@ -111,6 +111,25 @@ def getShopDetails(ebayShopId, categoryLink, page) :
     # time.sleep(2)
     shopUrl = homeUrl + ebayShopId + homeUrlEnding
     soupShop = changeProxy(shopUrl)
+    top5SoldItems = soupShop.findAll('span', class_="price fl bold")
+    soldItem1 = ''
+    soldItem2 = ''
+    soldItem3 = ''
+    soldItem4 = ''
+    soldItem5 = ''
+
+    if top5SoldItems :
+        if 0 < len(top5SoldItems) :
+            soldItem1 = top5SoldItems[0].text
+        if 1 < len(top5SoldItems) :
+            soldItem2 = top5SoldItems[1].text
+        if 2 < len(top5SoldItems) : 
+            soldItem3 = top5SoldItems[2].text
+        if 3 < len(top5SoldItems) : 
+            soldItem4 = top5SoldItems[3].text
+        if 4 < len(top5SoldItems) :
+            soldItem5 = top5SoldItems[4].text
+
     sellerRatingIs = soupShop.findAll('i', class_="gspr redStar star")
     if sellerRatingIs :
         # get seller rating
@@ -239,7 +258,7 @@ def getShopDetails(ebayShopId, categoryLink, page) :
         print "page --- " + str(page)
         print ""
         
-        wr.writerow([shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, memberSince, ebayShopId])             
+        wr.writerow([shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, soldItem1, soldItem2, soldItem3, soldItem4, soldItem5, memberSince, ebayShopId])             
 
 
 # main:
@@ -251,7 +270,7 @@ with open('ebayResults.csv', 'wb') as myfile:
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
     wr.writerow(["Website URL", "Company Name", "Phone Number", "Email", "Overall Rating", "Address", "Postal Code",
                 "Item As Described Count", "Item As Described Rating", "Communication Count", "Communication Rating", "Dispatch Time Count", "Dispatch Time Rating",
-                "Postage Count", "Postage Rating", "Member Since", "Ebay ShopId", "Imported to Hubspot?"])
+                "Postage Count", "Postage Rating", "Item 1 Price", "Item 2 Price", "Item 3 Price", "Item 4 Price",  "Item 5 Price", "Member Since", "Ebay ShopId", "Imported to Hubspot?"])
 
     hasPages = True
     currentPage = 1
