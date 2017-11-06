@@ -99,7 +99,10 @@ def changeProxy(url):
         except ConnectionError:
             goodProxy = False
         except TimeoutException, err:
-             goodProxy = False
+            goodProxy = False
+        except :
+            goodProxy = False
+            return soupProxy
     return soupProxy
 
 def getShopDetails(ebayShopId, categoryLink, page) :
