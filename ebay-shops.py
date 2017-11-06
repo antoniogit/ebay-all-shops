@@ -258,7 +258,7 @@ with open('ebayResults.csv', 'wb') as myfile:
     startPage = 24
 
     while hasPages:
-        if currentPage == startPage:
+        if currentPage >= startPage:
             categoryUrl = 'https://www.ebay.co.uk/b/Home-Decor-Items/10033/bn_1839832?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
             soup = changeProxy(categoryUrl)
             pageItems = soup.findAll('a', class_ = 's-item__link')
