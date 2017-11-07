@@ -282,7 +282,7 @@ with open('ebayResults.csv', 'wb') as myfile:
 
     hasPages = True
     currentPage = 1
-    startPage = 98
+    startPage = 145
     readPastLeads('PastResults.csv')
 
     while hasPages:
