@@ -98,8 +98,6 @@ def changeProxy(url):
                 goodProxy = True
         except ConnectionError:
             goodProxy = False
-        except TimeoutException, err:
-            goodProxy = False
         except :
             goodProxy = False
             return soupProxy
@@ -260,6 +258,14 @@ def getShopDetails(ebayShopId, categoryLink, page) :
         
         wr.writerow([shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, soldItem1, soldItem2, soldItem3, soldItem4, soldItem5, memberSince, ebayShopId])             
 
+def readPastLeads(fileName) :
+    ifile = open(fileName, "rb")
+    reader = csv.reader(ifile)
+
+    index = 0
+    for row in reader:
+        if index >0 :
+            visitedShops.append(row[21])
 
 # main:
 # get proxies from the csv file
@@ -274,7 +280,8 @@ with open('ebayResults.csv', 'wb') as myfile:
 
     hasPages = True
     currentPage = 1
-    startPage = 0
+    startPage = 80
+    readPastLeads('PastResults.csv')
 
     while hasPages:
         if currentPage >= startPage:
@@ -306,7 +313,7 @@ with open('ebayResults.csv', 'wb') as myfile:
                 hasPages = False
 
         currentPage +=1
-
+    print "final array"
 
 
 
