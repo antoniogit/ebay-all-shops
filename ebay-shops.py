@@ -282,7 +282,7 @@ with open('ebayResults.csv', 'wb') as myfile:
 
     hasPages = True
     currentPage = 1
-    startPage = 184
+    startPage = 0
     readPastLeads('PastResults.csv')
 
     while hasPages:
@@ -290,7 +290,7 @@ with open('ebayResults.csv', 'wb') as myfile:
         print '------------' + str(currentPage) + '-------------'
         print ''
         if currentPage >= startPage:
-            categoryUrl = 'https://www.ebay.co.uk/b/Home-Decor-Items/10033/bn_1839832?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
+            categoryUrl = 'https://www.ebay.co.uk/b/Womens-Shoulder-Bags/169291/bn_767414?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
             soup = changeProxy(categoryUrl)
 
             if soup:
