@@ -296,9 +296,12 @@ with open('ebayResults.csv', 'wb') as myfile:
 
             if pagination:
                 lastLi = pagination[-1]
-                lastLinks = lastLi.findAll('a')
-                lastLink = lastLinks[0]
-                biggestPageNumber = lastLink.text
+                biggestPageNumber = 0
+                
+                if lastLi:
+                    lastLinks = lastLi.findAll('a')
+                    lastLink = lastLinks[0]
+                    biggestPageNumber = lastLink.text
 
                 # get each product on the current page
                 if pageItems:
@@ -315,8 +318,8 @@ with open('ebayResults.csv', 'wb') as myfile:
                                     visitedShops.append(shopId)
                                     getShopDetails(shopId, categoryUrl, currentPage)
 
-            if currentPage >= int(biggestPageNumber) :
-                hasPages = False
+                if currentPage >= int(biggestPageNumber) :
+                    hasPages = False
 
         currentPage +=1
     print "final array"
