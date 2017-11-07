@@ -86,8 +86,10 @@ def changeProxy(url):
     goodProxy = False
     tries = 0
     soupProxy = ''
-    while goodProxy == False and tries <= 2:
+    while goodProxy == False and tries <= 3:
         chooseProxies()
+        if tries == 2 :
+            time.sleep(2)
         try:
             tries += 1
             chooseUserAgent();
@@ -280,7 +282,7 @@ with open('ebayResults.csv', 'wb') as myfile:
 
     hasPages = True
     currentPage = 1
-    startPage = 80
+    startPage = 98
     readPastLeads('PastResults.csv')
 
     while hasPages:
@@ -291,23 +293,27 @@ with open('ebayResults.csv', 'wb') as myfile:
 
             # get the biggest next page number on this page 
             pagination = soup.findAll('li', class_ = 'ebayui-pagination__li ')
-            lastLi = pagination[-1]
-            lastLinks = lastLi.findAll('a')
-            lastLink = lastLinks[0]
-            biggestPageNumber = lastLink.text
 
-            # get each product on the current page
-            if pageItems:
-                for pageItem in pageItems:
-                    sellerUrl = pageItem['href']
-                    itemSellerSoup = changeProxy(sellerUrl)
-                    shopIds = itemSellerSoup.findAll('span', class_='mbg-nw')
+            if pagination:
+                lastLi = pagination[-1]
+                lastLinks = lastLi.findAll('a')
+                lastLink = lastLinks[0]
+                biggestPageNumber = lastLink.text
 
-                    if shopIds:
-                        shopId = shopIds[0].text
-                        if shopId not in visitedShops :
-                            visitedShops.append(shopId)
-                            getShopDetails(shopId, categoryUrl, currentPage)
+                # get each product on the current page
+                if pageItems:
+                    for pageItem in pageItems:
+                        sellerUrl = pageItem['href']
+                        itemSellerSoup = changeProxy(sellerUrl)
+
+                        if itemSellerSoup :
+                            shopIds = itemSellerSoup.findAll('span', class_='mbg-nw')
+
+                            if shopIds:
+                                shopId = shopIds[0].text
+                                if shopId not in visitedShops :
+                                    visitedShops.append(shopId)
+                                    getShopDetails(shopId, categoryUrl, currentPage)
 
             if currentPage >= int(biggestPageNumber) :
                 hasPages = False
