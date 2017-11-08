@@ -111,154 +111,156 @@ def getShopDetails(ebayShopId, categoryLink, page) :
     # time.sleep(2)
     shopUrl = homeUrl + ebayShopId + homeUrlEnding
     soupShop = changeProxy(shopUrl)
-    top5SoldItems = soupShop.findAll('span', class_="price fl bold")
-    soldItem1 = ''
-    soldItem2 = ''
-    soldItem3 = ''
-    soldItem4 = ''
-    soldItem5 = ''
+    
+    if soupShop:
+        top5SoldItems = soupShop.findAll('span', class_="price fl bold")
+        soldItem1 = ''
+        soldItem2 = ''
+        soldItem3 = ''
+        soldItem4 = ''
+        soldItem5 = ''
 
-    if top5SoldItems :
-        if 0 < len(top5SoldItems) :
-            soldItem1 = top5SoldItems[0].text
-        if 1 < len(top5SoldItems) :
-            soldItem2 = top5SoldItems[1].text
-        if 2 < len(top5SoldItems) : 
-            soldItem3 = top5SoldItems[2].text
-        if 3 < len(top5SoldItems) : 
-            soldItem4 = top5SoldItems[3].text
-        if 4 < len(top5SoldItems) :
-            soldItem5 = top5SoldItems[4].text
+        if top5SoldItems :
+            if 0 < len(top5SoldItems) :
+                soldItem1 = top5SoldItems[0].text
+            if 1 < len(top5SoldItems) :
+                soldItem2 = top5SoldItems[1].text
+            if 2 < len(top5SoldItems) : 
+                soldItem3 = top5SoldItems[2].text
+            if 3 < len(top5SoldItems) : 
+                soldItem4 = top5SoldItems[3].text
+            if 4 < len(top5SoldItems) :
+                soldItem5 = top5SoldItems[4].text
 
-    sellerRatingIs = soupShop.findAll('i', class_="gspr redStar star")
-    if sellerRatingIs :
-        # get seller rating
-        sellerRatingI = sellerRatingIs[0]
-        rating = sellerRatingI['aria-label']
+        sellerRatingIs = soupShop.findAll('i', class_="gspr redStar star")
+        if sellerRatingIs :
+            # get seller rating
+            sellerRatingI = sellerRatingIs[0]
+            rating = sellerRatingI['aria-label']
 
-        # get business details
-        businessDetailsRows = soupShop.findAll('div', class_="bsi_row")
-        businessName = ''
-        businessAddress = ''
-        phone = ''
-        email = ''
-        
-        if businessDetailsRows :
-
-            for businessDetailsRow in businessDetailsRows:
-                bsiLabels = businessDetailsRow.findAll('span', class_='bsi_cell_label')
-                bsiLabel = bsiLabels[0]
-
-                if "Business name:" in bsiLabel.text :
-                    bsiCellValues = businessDetailsRow.findAll('span', class_='bsi_cell_value')
-                    bsiCellValue = bsiCellValues[0]
-                    businessName = bsiCellValue.text
-
-                if "Address:" in bsiLabel.text :
-                    bsiCellValues = businessDetailsRow.findAll('span', class_='bsi_cell_value')
-                    bsiCellValue = bsiCellValues[0]
-                    bsiCellValueAddresses = bsiCellValue.findAll('span', class_='bsi_cell_value_address')
-
-                    for bsiCellValueAddress in bsiCellValueAddresses:
-                        businessAddress += bsiCellValueAddress.text
-                
-                if "Phone:" in bsiLabel.text :
-                    bsiCellValues = businessDetailsRow.findAll('span', class_='bsi_cell_value')
-                    bsiCellValue = bsiCellValues[0]
-                    phone = bsiCellValue.text
-
-                if "Email:" in bsiLabel.text :
-                    bsiCellValues = businessDetailsRow.findAll('span', class_='bsi_cell_value')
-                    bsiCellValue = bsiCellValues[0]
-                    email = bsiCellValue.text
-
-        feedbackContainers = soupShop.findAll('div', class_='fl each')
-        itemAsDescribedCount = ''
-        itemAsDescribedRating = ''
-        communicationCount = ''
-        communicationRating = ''
-        dispatchTimeCount = ''
-        dispatchTimeRating = ''
-        postageCount = ''
-        postageRating = ''
-        memberSince = ''
-
-        if feedbackContainers :
+            # get business details
+            businessDetailsRows = soupShop.findAll('div', class_="bsi_row")
+            businessName = ''
+            businessAddress = ''
+            phone = ''
+            email = ''
             
-            for feedbackContainer in feedbackContainers:
-                feedbackTypes = feedbackContainer.findAll('span', class_='dsr_type')
-                feedbackType = feedbackTypes[0]
+            if businessDetailsRows :
 
-                if "Item as described" in feedbackType.text:
-                    feedbackTypeRatings = feedbackContainer.findAll('span', class_='gspr icfdy rating_ov')
-                    feedbackTypeRating  = feedbackTypeRatings[0]
-                    itemAsDescribedRating = feedbackTypeRating['title']
+                for businessDetailsRow in businessDetailsRows:
+                    bsiLabels = businessDetailsRow.findAll('span', class_='bsi_cell_label')
+                    bsiLabel = bsiLabels[0]
 
-                    feedbackTypeRatings = feedbackContainer.findAll('span', class_='dsr_count bold fl')
-                    feedbackTypeRating  = feedbackTypeRatings[0]
-                    itemAsDescribedCount = feedbackTypeRating.text
+                    if "Business name:" in bsiLabel.text :
+                        bsiCellValues = businessDetailsRow.findAll('span', class_='bsi_cell_value')
+                        bsiCellValue = bsiCellValues[0]
+                        businessName = bsiCellValue.text
 
-                if "Communication" in feedbackType.text:
-                    feedbackTypeRatings = feedbackContainer.findAll('span', class_='gspr icfdy rating_ov')
-                    feedbackTypeRating  = feedbackTypeRatings[0]
-                    communicationRating = feedbackTypeRating['title']
+                    if "Address:" in bsiLabel.text :
+                        bsiCellValues = businessDetailsRow.findAll('span', class_='bsi_cell_value')
+                        bsiCellValue = bsiCellValues[0]
+                        bsiCellValueAddresses = bsiCellValue.findAll('span', class_='bsi_cell_value_address')
 
-                    feedbackTypeRatings = feedbackContainer.findAll('span', class_='dsr_count bold fl')
-                    feedbackTypeRating  = feedbackTypeRatings[0]
-                    communicationCount = feedbackTypeRating.text
+                        for bsiCellValueAddress in bsiCellValueAddresses:
+                            businessAddress += bsiCellValueAddress.text
+                    
+                    if "Phone:" in bsiLabel.text :
+                        bsiCellValues = businessDetailsRow.findAll('span', class_='bsi_cell_value')
+                        bsiCellValue = bsiCellValues[0]
+                        phone = bsiCellValue.text
 
-                if "Dispatch time" in feedbackType.text:
-                    feedbackTypeRatings = feedbackContainer.findAll('span', class_='gspr icfdy rating_ov')
-                    feedbackTypeRating  = feedbackTypeRatings[0]
-                    dispatchTimeRating = feedbackTypeRating['title']
+                    if "Email:" in bsiLabel.text :
+                        bsiCellValues = businessDetailsRow.findAll('span', class_='bsi_cell_value')
+                        bsiCellValue = bsiCellValues[0]
+                        email = bsiCellValue.text
 
-                    feedbackTypeRatings = feedbackContainer.findAll('span', class_='dsr_count bold fl')
-                    feedbackTypeRating  = feedbackTypeRatings[0]
-                    dispatchTimeCount = feedbackTypeRating.text
+            feedbackContainers = soupShop.findAll('div', class_='fl each')
+            itemAsDescribedCount = ''
+            itemAsDescribedRating = ''
+            communicationCount = ''
+            communicationRating = ''
+            dispatchTimeCount = ''
+            dispatchTimeRating = ''
+            postageCount = ''
+            postageRating = ''
+            memberSince = ''
 
-                if "Postage" in feedbackType.text:
-                    feedbackTypeRatings = feedbackContainer.findAll('span', class_='gspr icfdy rating_ov')
-                    feedbackTypeRating  = feedbackTypeRatings[0]
-                    postageRating = feedbackTypeRating['title']
+            if feedbackContainers :
+                
+                for feedbackContainer in feedbackContainers:
+                    feedbackTypes = feedbackContainer.findAll('span', class_='dsr_type')
+                    feedbackType = feedbackTypes[0]
 
-                    feedbackTypeRatings = feedbackContainer.findAll('span', class_='dsr_count bold fl')
-                    feedbackTypeRating  = feedbackTypeRatings[0]
-                    postageCount = feedbackTypeRating.text
+                    if "Item as described" in feedbackType.text:
+                        feedbackTypeRatings = feedbackContainer.findAll('span', class_='gspr icfdy rating_ov')
+                        feedbackTypeRating  = feedbackTypeRatings[0]
+                        itemAsDescribedRating = feedbackTypeRating['title']
 
-                memberInfos = soupShop.findAll('div', class_='mem_info')
-                memberInfo = memberInfos[0]
-                sinces = memberInfo.findAll('span', class_='info')
-                since = sinces[0]
-                memberSince = since.text
+                        feedbackTypeRatings = feedbackContainer.findAll('span', class_='dsr_count bold fl')
+                        feedbackTypeRating  = feedbackTypeRatings[0]
+                        itemAsDescribedCount = feedbackTypeRating.text
 
-        # get postcode 
-        postcodeEnd = businessAddress.find(" United Kingdom")
-        partialLoc = businessAddress[0:postcodeEnd]
-        middleSpaceIndex = partialLoc.rfind(" ", 0, len(partialLoc))
-        trimmedLocationHalFPostCode = businessAddress[0:middleSpaceIndex]
-        postcodeStart = trimmedLocationHalFPostCode.rfind(" ", 0, len(trimmedLocationHalFPostCode))
-        postcode = businessAddress[postcodeStart:postcodeEnd]
-        address = businessAddress[0: postcodeStart]
+                    if "Communication" in feedbackType.text:
+                        feedbackTypeRatings = feedbackContainer.findAll('span', class_='gspr icfdy rating_ov')
+                        feedbackTypeRating  = feedbackTypeRatings[0]
+                        communicationRating = feedbackTypeRating['title']
 
-        print businessName
-        print businessAddress
-        print phone
-        print email
-        print rating
-        print itemAsDescribedCount
-        print itemAsDescribedRating
-        print communicationCount
-        print communicationRating
-        print dispatchTimeCount
-        print dispatchTimeRating
-        print postageCount
-        print postageRating
-        print memberSince
-        print categoryLink
-        print "page --- " + str(page)
-        print ""
-        
-        wr.writerow([shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, soldItem1, soldItem2, soldItem3, soldItem4, soldItem5, memberSince, ebayShopId])             
+                        feedbackTypeRatings = feedbackContainer.findAll('span', class_='dsr_count bold fl')
+                        feedbackTypeRating  = feedbackTypeRatings[0]
+                        communicationCount = feedbackTypeRating.text
+
+                    if "Dispatch time" in feedbackType.text:
+                        feedbackTypeRatings = feedbackContainer.findAll('span', class_='gspr icfdy rating_ov')
+                        feedbackTypeRating  = feedbackTypeRatings[0]
+                        dispatchTimeRating = feedbackTypeRating['title']
+
+                        feedbackTypeRatings = feedbackContainer.findAll('span', class_='dsr_count bold fl')
+                        feedbackTypeRating  = feedbackTypeRatings[0]
+                        dispatchTimeCount = feedbackTypeRating.text
+
+                    if "Postage" in feedbackType.text:
+                        feedbackTypeRatings = feedbackContainer.findAll('span', class_='gspr icfdy rating_ov')
+                        feedbackTypeRating  = feedbackTypeRatings[0]
+                        postageRating = feedbackTypeRating['title']
+
+                        feedbackTypeRatings = feedbackContainer.findAll('span', class_='dsr_count bold fl')
+                        feedbackTypeRating  = feedbackTypeRatings[0]
+                        postageCount = feedbackTypeRating.text
+
+                    memberInfos = soupShop.findAll('div', class_='mem_info')
+                    memberInfo = memberInfos[0]
+                    sinces = memberInfo.findAll('span', class_='info')
+                    since = sinces[0]
+                    memberSince = since.text
+
+            # get postcode 
+            postcodeEnd = businessAddress.find(" United Kingdom")
+            partialLoc = businessAddress[0:postcodeEnd]
+            middleSpaceIndex = partialLoc.rfind(" ", 0, len(partialLoc))
+            trimmedLocationHalFPostCode = businessAddress[0:middleSpaceIndex]
+            postcodeStart = trimmedLocationHalFPostCode.rfind(" ", 0, len(trimmedLocationHalFPostCode))
+            postcode = businessAddress[postcodeStart:postcodeEnd]
+            address = businessAddress[0: postcodeStart]
+
+            print businessName
+            print businessAddress
+            print phone
+            print email
+            print rating
+            print itemAsDescribedCount
+            print itemAsDescribedRating
+            print communicationCount
+            print communicationRating
+            print dispatchTimeCount
+            print dispatchTimeRating
+            print postageCount
+            print postageRating
+            print memberSince
+            print categoryLink
+            print "page --- " + str(page)
+            print ""
+            
+            wr.writerow([shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, soldItem1, soldItem2, soldItem3, soldItem4, soldItem5, memberSince, ebayShopId])             
 
 def readPastLeads(fileName) :
     ifile = open(fileName, "rb")
@@ -290,7 +292,7 @@ with open('ebayResults.csv', 'wb') as myfile:
         print '------------' + str(currentPage) + '-------------'
         print ''
         if currentPage >= startPage:
-            categoryUrl = 'https://www.ebay.co.uk/b/Womens-Shoulder-Bags/169291/bn_767414?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
+            categoryUrl = 'https://www.ebay.co.uk/b/Nursery-Decoration-Furniture/66697/bn_1839264?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
             soup = changeProxy(categoryUrl)
 
             if soup:
@@ -320,6 +322,7 @@ with open('ebayResults.csv', 'wb') as myfile:
                                 if shopIds:
                                     shopId = shopIds[0].text
                                     if shopId not in visitedShops :
+
                                         visitedShops.append(shopId)
                                         getShopDetails(shopId, categoryUrl, currentPage)
 
