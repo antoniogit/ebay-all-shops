@@ -292,7 +292,7 @@ with open('ebayResults.csv', 'wb') as myfile:
         print '------------' + str(currentPage) + '-------------'
         print ''
         if currentPage >= startPage:
-            categoryUrl = 'https://www.ebay.co.uk/b/Nursery-Decoration-Furniture/66697/bn_1839264?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
+            categoryUrl = 'https://www.ebay.co.uk/b/Art-Paintings/551/bn_7204697?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
             soup = changeProxy(categoryUrl)
 
             if soup:
@@ -321,8 +321,14 @@ with open('ebayResults.csv', 'wb') as myfile:
 
                                 if shopIds:
                                     shopId = shopIds[0].text
-                                    if shopId not in visitedShops :
+                                    visited = False
 
+                                    for visitedId in visitedShops:
+                                        if shopId in visitedId:
+                                            visited = True
+                                            break
+
+                                    if visited == False:
                                         visitedShops.append(shopId)
                                         getShopDetails(shopId, categoryUrl, currentPage)
 
