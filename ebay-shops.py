@@ -292,7 +292,7 @@ with open('ebayResults.csv', 'wb') as myfile:
         print '------------' + str(currentPage) + '-------------'
         print ''
         if currentPage >= startPage:
-            categoryUrl = 'https://www.ebay.co.uk/b/Antique-Woodenware/37941/bn_1839303?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
+            categoryUrl = 'https://www.ebay.co.uk/b/Contemporary-Sculptures-1980-Now/553/bn_2316943?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
             soup = changeProxy(categoryUrl)
 
             if soup:
