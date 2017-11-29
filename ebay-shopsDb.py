@@ -342,7 +342,7 @@ def getShopDetails(ebayShopId, categoryLink, page, category, headlineCategory) :
         print "page --- " + str(page)
         print ""
 
-        wr.writerow([shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, soldItem1, soldItem2, soldItem3, soldItem4, soldItem5, memberSince, ebayShopId, category, headlineCategory])             
+        # wr.writerow([shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, soldItem1, soldItem2, soldItem3, soldItem4, soldItem5, memberSince, ebayShopId, category, headlineCategory])             
         writeToDb(shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, soldItem1, soldItem2, soldItem3, soldItem4, memberSince, ebayShopId, category, headlineCategory)
 
 def readPastLeads(fileName) :
@@ -391,11 +391,9 @@ def writeToDb(shopUrl, businessName, phone, email, rating, businessAddress, post
 # getProxies("US Proxy List.csv")
 getProxies("cool-proxy.net - all http.csv")
 
-with open('ebayResults.csv', 'wb') as myfile:
+with open('ebayProblematicCategories.csv', 'wb') as myfile:
     wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-    wr.writerow(["Website URL", "Company Name", "Phone Number", "Email", "Overall Rating", "Address", "Postal Code",
-                "Item As Described Count", "Item As Described Rating", "Communication Count", "Communication Rating", "Dispatch Time Count", "Dispatch Time Rating",
-                "Postage Count", "Postage Rating", "Item 1 Price", "Item 2 Price", "Item 3 Price", "Item 4 Price",  "Item 5 Price", "Member Since", "Ebay ShopId", "Imported to Hubspot?"])
+    wr.writerow(["Website URL with multiple categories"])
 
     hasPages = True
     currentPage = 1
@@ -415,7 +413,7 @@ with open('ebayResults.csv', 'wb') as myfile:
     reader = csv.reader(ifile)
     index = 0
     for row2 in reader:
-        if index >0:
+        if index > 0:
             headlineCategory = row2[0]
             category = row2[1]
             catUrl = row2[3]
@@ -470,8 +468,11 @@ with open('ebayResults.csv', 'wb') as myfile:
 
                             if currentPage >= int(biggestPageNumber) :
                                 hasPages = False
+                        else :
+                            wr.writerow([catUrl])
+                            hasPages = False
                 currentPage +=1
-        index = +1
+        index += 1
 print "final array"
 
 
