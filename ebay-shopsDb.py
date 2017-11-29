@@ -415,13 +415,13 @@ with open('ebayResults.csv', 'wb') as myfile:
     reader = csv.reader(ifile)
     index = 0
     for row2 in reader:
-        if index >0 and index < 2:
+        if index >0:
             headlineCategory = row2[0]
             category = row2[1]
             catUrl = row2[3]
             hasPages = True
             currentPage = 1
-            startPage = 52
+            startPage = 0
 
             while hasPages:
                 print ''
