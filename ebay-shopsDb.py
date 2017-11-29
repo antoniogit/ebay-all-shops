@@ -413,11 +413,12 @@ with open('ebayResults.csv', 'wb') as myfile:
     ifile = open("ebayCategoriesRated.csv", "rb")
     reader = csv.reader(ifile)
     index = 0
-    for row in reader:
+    for row2 in reader:
         if index >0 :
-            headlineCategory = row[0]
-            category = row[1]
-            catUrl = row[3]
+            headlineCategory = row2[0]
+            category = row2[1]
+            catUrl = row2[3]
+            hasPages = True
 
             while hasPages:
                 print ''
@@ -466,7 +467,6 @@ with open('ebayResults.csv', 'wb') as myfile:
 
                             if currentPage >= int(biggestPageNumber) :
                                 hasPages = False
-
                 currentPage +=1
         index = +1
 print "final array"
