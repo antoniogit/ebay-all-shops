@@ -368,11 +368,12 @@ def isThereAnotherShopIdInDb(ebayShopId) :
     cur = conn.cursor()
     cur.execute("""SELECT COUNT(*) FROM ebay_leads WHERE ebay_shop_id = %s""", [str(ebayShopId)])
     result = cur.fetchone()
-    print result[0]
 
     if result[0] == 0 :
+        print "not-visited"
         return True
 
+    print "visited"
     return False
 
 def writeToDb(shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, soldItem1, soldItem2, soldItem3, soldItem4, memberSince, ebayShopId, category, headlineCategory) :
@@ -414,11 +415,13 @@ with open('ebayResults.csv', 'wb') as myfile:
     reader = csv.reader(ifile)
     index = 0
     for row2 in reader:
-        if index >0 :
+        if index >0 and index < 2:
             headlineCategory = row2[0]
             category = row2[1]
             catUrl = row2[3]
             hasPages = True
+            currentPage = 1
+            startPage = 52
 
             while hasPages:
                 print ''
