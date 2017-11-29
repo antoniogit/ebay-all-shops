@@ -459,10 +459,10 @@ with open('ebayResults.csv', 'wb') as myfile:
                                             shopId = shopIds[0].text
                                             visited = False
                                             print '----------' + shopId + '-----------'
-                                            for visitedId in visitedShops:
-                                                if shopId in visitedId or isThereAnotherShopIdInDb(shopId) == False:
-                                                    visited = True
-                                                    break
+
+                                            if isThereAnotherShopIdInDb(shopId) == False:
+                                                visited = True
+                                            
 
                                             if visited == False:
                                                 visitedShops.append(shopId)
