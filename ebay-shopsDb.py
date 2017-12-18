@@ -154,15 +154,15 @@ def getShopDetails(ebayShopId, categoryLink, page, category, headlineCategory) :
                         hasTopSoldItems = False
             if hasTopSoldItems:
                 if 0 < len(top5SoldItems) :
-                    soldItem1 = float(top5SoldItems[0].text.replace("£", "").replace(",", ""))
+                    soldItem1 = float(top5SoldItems[0].text.replace("£", "").replace(",", "").replace(" ",""))
                 if 1 < len(top5SoldItems) :
-                    soldItem2 = float(top5SoldItems[1].text.replace("£", "").replace(",", ""))
+                    soldItem2 = float(top5SoldItems[1].text.replace("£", "").replace(",", "").replace(" ",""))
                 if 2 < len(top5SoldItems) : 
-                    soldItem3 = float(top5SoldItems[2].text.replace("£", "").replace(",", ""))
+                    soldItem3 = float(top5SoldItems[2].text.replace("£", "").replace(",", "").replace(" ",""))
                 if 3 < len(top5SoldItems) : 
-                    soldItem4 = float(top5SoldItems[3].text.replace("£", "").replace(",", ""))
+                    soldItem4 = float(top5SoldItems[3].text.replace("£", "").replace(",", "").replace(" ",""))
                 if 4 < len(top5SoldItems) :
-                    soldItem5 = float(top5SoldItems[4].text.replace("£", "").replace(",", ""))
+                    soldItem5 = float(top5SoldItems[4].text.replace("£", "").replace(",", "").replace(" ",""))
 
         sellerRatingContainer = soupShop.findAll('span', class_='mbg-l')
         if sellerRatingContainer :
