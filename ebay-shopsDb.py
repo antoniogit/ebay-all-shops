@@ -368,6 +368,7 @@ def isThereAnotherShopIdInDb(ebayShopId) :
     cur = conn.cursor()
     cur.execute("""SELECT COUNT(*) FROM ebay_leads WHERE ebay_shop_id = %s""", [str(ebayShopId)])
     result = cur.fetchone()
+    cur.close()
 
     if result[0] == 0 :
         print "not-visited"
@@ -412,6 +413,8 @@ with open('ebayProblematicCategories.csv', 'wb') as myfile:
     ifile = open("ebayCategoriesRated.csv", "rb")
     reader = csv.reader(ifile)
     index = 0
+    startScrape = False
+
     for row2 in reader:
         if index > 0:
             headlineCategory = row2[0]
@@ -421,7 +424,11 @@ with open('ebayProblematicCategories.csv', 'wb') as myfile:
             currentPage = 1
             startPage = 0
 
-            while hasPages:
+            if catUrl = 'https://www.ebay.co.uk/b/Womens-Hair-Accessories/45220/bn_1528086':
+                startScrape = True
+
+            if startScrape:
+                while hasPages:
                 print ''
                 print '------------' + str(currentPage) + '-------------'
                 print ''
