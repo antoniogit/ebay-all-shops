@@ -429,56 +429,56 @@ with open('ebayProblematicCategories.csv', 'wb') as myfile:
 
             if startScrape:
                 while hasPages:
-                print ''
-                print '------------' + str(currentPage) + '-------------'
-                print ''
-                if currentPage >= startPage:
-                    categoryUrl = catUrl +'?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
-                    soup = changeProxy(categoryUrl)
+                    print ''
+                    print '------------' + str(currentPage) + '-------------'
+                    print ''
+                    if currentPage >= startPage:
+                        categoryUrl = catUrl +'?LH_BIN=1&LH_PrefLoc=99&LH_SellerWithStore=1&rt=nc&_fspt=1&_pgn=' + str(currentPage) + '&_sadis=15&_sop=12&_stpos=WC1H0AA&_udlo=3'
+                        soup = changeProxy(categoryUrl)
 
-                    if soup:
-                        pageItems = soup.findAll('a', class_ = 's-item__link')
+                        if soup:
+                            pageItems = soup.findAll('a', class_ = 's-item__link')
 
-                        # get the biggest next page number on this page 
-                        pagination = soup.findAll('li', class_ = 'ebayui-pagination__li ')
+                            # get the biggest next page number on this page 
+                            pagination = soup.findAll('li', class_ = 'ebayui-pagination__li ')
 
-                        if pagination:
-                            lastLi = pagination[-1]
-                            biggestPageNumber = 0
-                            
-                            if lastLi:
-                                lastLinks = lastLi.findAll('a')
-                                lastLink = lastLinks[0]
-                                biggestPageNumber = lastLink.text
+                            if pagination:
+                                lastLi = pagination[-1]
+                                biggestPageNumber = 0
+                                
+                                if lastLi:
+                                    lastLinks = lastLi.findAll('a')
+                                    lastLink = lastLinks[0]
+                                    biggestPageNumber = lastLink.text
 
-                            # get each product on the current page
-                            if pageItems:
-                                for pageItem in pageItems:
-                                    sellerUrl = pageItem['href']
-                                    itemSellerSoup = changeProxy(sellerUrl)
+                                # get each product on the current page
+                                if pageItems:
+                                    for pageItem in pageItems:
+                                        sellerUrl = pageItem['href']
+                                        itemSellerSoup = changeProxy(sellerUrl)
 
-                                    if itemSellerSoup :
-                                        shopIds = itemSellerSoup.findAll('span', class_='mbg-nw')
+                                        if itemSellerSoup :
+                                            shopIds = itemSellerSoup.findAll('span', class_='mbg-nw')
 
-                                        if shopIds:
-                                            shopId = shopIds[0].text
-                                            visited = False
-                                            print '----------' + shopId + '-----------'
+                                            if shopIds:
+                                                shopId = shopIds[0].text
+                                                visited = False
+                                                print '----------' + shopId + '-----------'
 
-                                            if isThereAnotherShopIdInDb(shopId) == False:
-                                                visited = True
-                                            
+                                                if isThereAnotherShopIdInDb(shopId) == False:
+                                                    visited = True
+                                                
 
-                                            if visited == False:
-                                                visitedShops.append(shopId)
-                                                getShopDetails(shopId, categoryUrl, currentPage, category, headlineCategory)
+                                                if visited == False:
+                                                    visitedShops.append(shopId)
+                                                    getShopDetails(shopId, categoryUrl, currentPage, category, headlineCategory)
 
-                            if currentPage >= int(biggestPageNumber) :
+                                if currentPage >= int(biggestPageNumber) :
+                                    hasPages = False
+                            else :
+                                wr.writerow([catUrl])
                                 hasPages = False
-                        else :
-                            wr.writerow([catUrl])
-                            hasPages = False
-                currentPage +=1
+                    currentPage +=1
         index += 1
 print "final array"
 
