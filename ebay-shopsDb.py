@@ -424,7 +424,7 @@ with open('ebayProblematicCategories.csv', 'wb') as myfile:
             currentPage = 1
             startPage = 0
 
-            if catUrl = 'https://www.ebay.co.uk/b/Womens-Hair-Accessories/45220/bn_1528086':
+            if catUrl in 'https://www.ebay.co.uk/b/Womens-Hair-Accessories/45220/bn_1528086':
                 startScrape = True
 
             if startScrape:
