@@ -58,6 +58,9 @@ userAgentsList = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:56.0) Gecko/20100101 Firefox/56.0'
 ]
 
+conn=psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
+cur = conn.cursor()
+
 def getProxies(fileName) :
     index = 0
     ifile = open(fileName, "rb")
@@ -364,11 +367,8 @@ def doQuery( conn ) :
 
 def isThereAnotherShopIdInDb(ebayShopId) :
     
-    conn=psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
-    cur = conn.cursor()
     cur.execute("""SELECT COUNT(*) FROM ebay_leads WHERE ebay_shop_id = %s""", [str(ebayShopId)])
     result = cur.fetchone()
-    cur.close()
 
     if result[0] == 0 :
         print "not-visited"
@@ -379,13 +379,10 @@ def isThereAnotherShopIdInDb(ebayShopId) :
 
 def writeToDb(shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, soldItem1, soldItem2, soldItem3, soldItem4, memberSince, ebayShopId, category, headlineCategory) :
     
-    conn=psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
-    cur = conn.cursor()
     cur.execute("""INSERT INTO ebay_leads (website_url, company_name, phone_number, email, overall_rating, address, postal_code, item_as_described_count, item_as_described_rating, communication_count, communication_rating, dispatch_time_count, dispatch_time_rating, postage_count, postage_rating, item_1_price, item_2_price, item_3_price, item_4_price, member_since, ebay_shop_id, category, headline_category)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);""",
         (shopUrl, businessName, phone, email, rating, businessAddress, postcode, itemAsDescribedCount, itemAsDescribedRating, communicationCount, communicationRating, dispatchTimeCount, dispatchTimeRating, postageCount, postageRating, soldItem1, soldItem2, soldItem3, soldItem4, memberSince, ebayShopId, category, headlineCategory ))
     conn.commit()
-    cur.close()
 
 # main:
 # get proxies from the csv file
@@ -424,7 +421,7 @@ with open('ebayProblematicCategories.csv', 'wb') as myfile:
             currentPage = 1
             startPage = 0
 
-            if catUrl in 'https://www.ebay.co.uk/b/Womens-Hair-Accessories/45220/bn_1528086':
+            if catUrl in 'https://www.ebay.co.uk/b/Fine-Jewellery/4196/bn_1841461':
                 startScrape = True
 
             if startScrape:
@@ -480,6 +477,8 @@ with open('ebayProblematicCategories.csv', 'wb') as myfile:
                                 hasPages = False
                     currentPage +=1
         index += 1
+
+cur.close()
 print "final array"
 
 
