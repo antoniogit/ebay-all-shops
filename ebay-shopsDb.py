@@ -156,16 +156,23 @@ def getShopDetails(ebayShopId, categoryLink, page, category, headlineCategory) :
                     if len(topSolUrls) > 0:
                         hasTopSoldItems = False
             if hasTopSoldItems:
-                if 0 < len(top5SoldItems) :
-                    soldItem1 = float(top5SoldItems[0].text.replace("£", "").replace(",", "").replace(" ",""))
-                if 1 < len(top5SoldItems) :
-                    soldItem2 = float(top5SoldItems[1].text.replace("£", "").replace(",", "").replace(" ",""))
-                if 2 < len(top5SoldItems) : 
-                    soldItem3 = float(top5SoldItems[2].text.replace("£", "").replace(",", "").replace(" ",""))
-                if 3 < len(top5SoldItems) : 
-                    soldItem4 = float(top5SoldItems[3].text.replace("£", "").replace(",", "").replace(" ",""))
-                if 4 < len(top5SoldItems) :
-                    soldItem5 = float(top5SoldItems[4].text.replace("£", "").replace(",", "").replace(" ",""))
+                try:
+                    if 0 < len(top5SoldItems) :
+                        soldItem1 = float(top5SoldItems[0].text.replace("£", "").replace(",", "").replace(" ",""))
+                    if 1 < len(top5SoldItems) :
+                        soldItem2 = float(top5SoldItems[1].text.replace("£", "").replace(",", "").replace(" ",""))
+                    if 2 < len(top5SoldItems) : 
+                        soldItem3 = float(top5SoldItems[2].text.replace("£", "").replace(",", "").replace(" ",""))
+                    if 3 < len(top5SoldItems) : 
+                        soldItem4 = float(top5SoldItems[3].text.replace("£", "").replace(",", "").replace(" ",""))
+                    if 4 < len(top5SoldItems) :
+                        soldItem5 = float(top5SoldItems[4].text.replace("£", "").replace(",", "").replace(" ",""))
+                except:
+                    soldItem1 = 0;
+                    soldItem2 = 0;
+                    soldItem3 = 0;
+                    soldItem4 = 0;
+                    soldItem5 = 0;
 
         sellerRatingContainer = soupShop.findAll('span', class_='mbg-l')
         if sellerRatingContainer :
@@ -421,7 +428,7 @@ with open('ebayProblematicCategories.csv', 'wb') as myfile:
             currentPage = 1
             startPage = 0
 
-            if catUrl in 'https://www.ebay.co.uk/b/Fine-Jewellery/4196/bn_1841461':
+            if catUrl in 'https://www.ebay.co.uk/b/Toy-Model-Kits/1188/bn_1842061':
                 startScrape = True
 
             if startScrape:
